@@ -1,0 +1,72 @@
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		<div class="well">
+			<% if !@location.nil? && @error.nil? %>
+				<div class="row">
+					<div class="col-md-7">
+						<p><em>Weather</em></p>
+						<p>
+							Temp: <%= @temp_f %> F / <%= @temp_c %> C
+						</p>
+						<p>
+							Feels like: <%= @real_feel_f %> F
+						</p>
+					</div>
+					<div class="col-md-5">
+						<p>
+							<%= @weather_words %> <%= image_tag @weather_icon %>
+						</p>
+						<p>
+							<%= link_to "Full Forecast", @forecast_link, target: "blank" %>
+						</p>
+					</div>
+				</div>
+				<div>
+				<%= link_to "Save Location", save_location_path(location_id: :location_id) %>
+				</div>
+			<% else %>
+				<p>
+					Error: Please enter a valid location. <%= @error %> 
+				</p>
+
+			<% end %>
+		</div>
+	</div>
+
+
+</div>
+
+
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		<div class="well">
+			<h1>Look up the weather forecast:</h1>
+			<div>
+				<%= form_tag index_path do %>
+					<%= text_field_tag :city, nil, placeholder: "City", class:"form-control" %>
+					<br>
+					<%= select_tag :state, options_for_select(@states), prompt:"Please select" %>
+					<br>
+					<%= submit_tag "Check Weather!", class:"btn btn-primary" %>
+
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div>
+	<p>
+		Saved locations:
+	</p>
+	<ul>
+		<% if @location != nil %>
+			<%= @location.each do |location| %>
+				<li><%= link_to location.city.upcase location.state.upcase, show_location_path(location_id: :location_id) >%
+				</li>
+			<% end %>
+		<% end %>
+	</ul>
+
+</div>
+<% end -%>
